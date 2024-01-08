@@ -77,7 +77,7 @@
 </div>
 
 <div class="footer">
-  =
+  v1.0.1
 </div>
 </div>
 
@@ -88,7 +88,7 @@
     padding: 0;
   }
   .container {
-    padding: 20px;
+    padding: 40px;
   }
   .center {
     text-align: center;
@@ -96,7 +96,7 @@
   h1 {
     background-color: darkgreen;
     color: white;
-    padding: 5px;
+    padding: 20px;
     text-align: center;
   }
   .period {
@@ -108,7 +108,7 @@
   .value {
     font-size: x-large;
     font-weight: bold;
-    background-color: silver;
+    background-color: whitesmoke;
     color: darkblue;
     padding: 10px;
   }
