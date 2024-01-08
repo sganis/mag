@@ -10,6 +10,7 @@ import calendar
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
+
 URL = 'https://www.mercadoagroganadero.com.ar/dll/hacienda2.dll/haciinfo000013'
 MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
           'Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
@@ -67,9 +68,9 @@ def get_data(date):
         data =  CACHE[period]
         data['cache'] = True
         return data                
-
+    url = f'{URL}?txtFechaIni={start}&txtFechaFin={end}'
     try:
-        r = requests.post(URL, data={'txtFechaIni': start, 'txtFechaFin': end})
+        r = requests.get(url)
         html = bs4.BeautifulSoup(r.text)
         value = int(html.body.find_all('td')[-2].text.replace('.','').replace(',',''))/1000
     except:
@@ -80,6 +81,8 @@ def get_data(date):
     data['period'] = period
     data['value'] = value
     data['cache'] = False
+    data['url'] = url
+    
     CACHE[period] = data
     return data 
 
