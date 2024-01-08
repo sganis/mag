@@ -77,7 +77,7 @@
 </div>
 
 <div class="footer">
-  v1.0.1
+  v1.0.2
 </div>
 </div>
 
@@ -111,5 +111,16 @@
     background-color: whitesmoke;
     color: darkblue;
     padding: 10px;
+  }
+  .header {
+  background-color: black;
+  color: gainsboro;
+  padding: 10px;
+  }
+  .footer {
+    background-color: black;
+    color: gainsboro;
+    padding: 10px;
+    height: 60px;
   }
 </style>

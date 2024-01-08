@@ -31,11 +31,7 @@ body {
   border: 1px solid gainsboro;
 }
 
-.header, .footer {
-  background-color: black;
-  color: gainsboro;
-  padding: 10px;
-}
+
 
 .scrollable {
   overflow-y: auto;
