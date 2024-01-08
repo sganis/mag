@@ -1,9 +1,10 @@
 {
-    "builds": [
-      {
-        "src": "/api/main.py",
-        "use": "@vercel/python"
-      }
-    ],
-    "routes": [{ "src": "/(.*)", "dest": "api/main.py" }]
-  }
+  "buildCommand": "npm run build --prefix client",
+  "builds": [
+    {
+      "src": "/api/main.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [{ "src": "/(.*)", "dest": "api/main.py" }]
+}
