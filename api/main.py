@@ -37,7 +37,9 @@ def get_version():
 
 
 @app.get("/api")
-def f():
+def f(cache: bool = True):
+    if not cache:
+        CACHE.clear()
     date = datetime.today()
     y = date.year
     m = date.month
@@ -82,6 +84,8 @@ def get_data(date):
     data['value'] = value
     data['cache'] = False
     data['url'] = url
+    data['last_update'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    
     
     CACHE[period] = data
     return data 

@@ -1,7 +1,7 @@
 <script>
   import 'bootstrap/dist/css/bootstrap.min.css';
   import 'bootstrap/dist/js/bootstrap.min.js';
-  //import 'bootstrap-icons/font/bootstrap-icons.css'
+  import 'bootstrap-icons/font/bootstrap-icons.css'
   import { onMount } from 'svelte';
   import {working} from './store'
   import Working from './Working.svelte';
@@ -11,14 +11,14 @@
   let error;
 
   onMount(async () => {
-        await getData();
+        await getData(true);
   });
 
 
-  export const getData = async () => {
+  export const getData = async (cache) => {
     try {
         $working = true;
-        let api = `${url}api`;
+        let api = `${url}api?refresh=${cache}`;
         
         const r = await fetch(api, {
             headers: {
@@ -49,33 +49,42 @@
   
 <div class="scrollable main">
   <h1>Indice de Arrenamiento Mensual</h1>
-  <div class="container">
-    
+  <div class="container">  
     {#if $working}
       <div class="center">
-      <Working message=""/>
+        <Working message=""/>
       </div>
     {:else}
-    <div class="center">
-      <div class="period">
-        {data.period}
+      <div class="center">
+        <div class="period">
+          {data.period}
+        </div>
+        <div class="value selectable">
+          $ {data.value?.toFixed(2).toLocaleString('fr-FR')}
+        </div>
       </div>
-      <div class="value">
-        ARS {data.value}
-      </div>
-    </div>
-    <br>
-    <br>
-    <div class="notes">
-      Indice novillo mensual para arrendamientos rurales. 
-      Mercado de Cañuelas. 
-      Datos sumistrados por 
-      <a href="{data.url}">Mercado Agroganadero</a>
-    </div>
     {/if}
   </div>
 </div>
-
+<div class="row center m-2">
+  <div class="col">
+    <div class="notes">
+      Indice novillo mensual para arrendamientos rurales en Pesos Argentinos.
+      Mercado de Cañuelas. 
+      Datos sumistrados por 
+      <a href="{data.url}" target="_blank">Mercado Agroganadero</a> 
+      el {data['last_update']}.
+    </div>
+  </div>
+</div>
+<div class="row center m-2">
+  <div class="col">    
+    <button class="btn btn-success btn-lgl w100"
+        on:click={()=>getData(false)}>
+        <i class="bi-arrow-repeat"/>
+    </button>
+  </div>
+</div>
 <div class="footer">
   v1.0.2
 </div>
@@ -113,14 +122,21 @@
     padding: 10px;
   }
   .header {
-  background-color: black;
-  color: gainsboro;
-  padding: 10px;
+    background-color: black;
+    color: gainsboro;
+    padding: 10px;
   }
   .footer {
     background-color: black;
     color: gainsboro;
     padding: 10px;
     height: 60px;
+  }
+  .notes {
+    text-align: left;
+    font-size: small;
+  }
+  .w100 {
+    width: 100px;
   }
 </style>
