@@ -22,8 +22,8 @@ export default defineConfig({
         "description": "Indice de precio sugerido para arrendamiento de campos",
         "start_url": "/",
         "id": "/",
-        "theme_color": "#ffffff",
-        "background_color": "#ffffff",
+        "theme_color": "#000000",
+        "background_color": "#000000",
         "display": "fullscreen",
         "icons": [
           {
