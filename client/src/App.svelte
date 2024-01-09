@@ -5,17 +5,56 @@
   import { onMount } from 'svelte';
   import {working} from './store'
   import Working from './Working.svelte';
+  import { registerSW } from 'virtual:pwa-register'
+
 
   let url = import.meta.env.VITE_PUBLIC_BASE_URL;
   let data = {}
   let error;
-
+  let last_update;
+  let source;
+  let offline = false;
+  
   onMount(async () => {
-        await getData(true);
+     await getData(true);      
   });
 
+  const getMonthKey = () => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).substring(-2);
+    const key = [year, month].join('');
+    console.log(key);
+    return key;
+  }
+  const updateSW = registerSW({
+    immediate: true,
+    onOfflineReady() {
+      console.log('offline ready');
+    },
+  });
+
+  window.addEventListener("offline", (e) => {
+    offline = true;
+  });
+
+  window.addEventListener("online", (e) => {
+    offline = false;
+  });
 
   export const getData = async (cache) => {
+    const key = getMonthKey();
+
+    if (cache) {
+      data = JSON.parse(localStorage.getItem(key));    
+      if (data) {
+        source = "Cache";
+        last_update = data.last_update ? 
+           new Date(data.last_update).toString(): 'n/a'; 
+        console.log('data from local storge');
+        return;
+      }
+    }
     try {
         $working = true;
         let api = `${url}api?cache=${cache}`;
@@ -29,6 +68,16 @@
         //console.log(js);
         if (r.status === 200) {
             data = js;
+            if (data.cache) {
+              source = 'API';
+            } else {
+              source = 'MAG';
+            }
+            last_update = data.last_update ? 
+              new Date(data.last_update).toString(): 'n/a';
+            
+              localStorage.setItem(key, JSON.stringify(data));
+
         } else {
             error = js.detail;
         }
@@ -40,22 +89,26 @@
         $working = false;
     }
   }
+
+
+
+
 </script>
 
 <div class="full">
 <div class="header">
   v1.0.3
 </div>
-  
-<div class="scrollable main">
-  <h1>Indice de Arrenamiento Mensual</h1>
-  <div class="container">  
+
+<h1>Indice de Arrenamiento Mensual</h1>
+<div class="scrollable"> 
+  <div class="content">  
     {#if $working}
       <div class="center">
         <Working message=""/>
       </div>
     {:else}
-      <div class="center">
+      <div class="center shadow">
         <div class="period">
           {data.period}
         </div>
@@ -63,51 +116,70 @@
           $ {data.value?.toFixed(2).toLocaleString('fr-FR')}
         </div>
       </div>
+      <div class="row">
+        <br><br>
+      </div>
+      <div class="center m-1 mt-4">
+        <div class="notes">
+            Indice novillo mensual para arrendamientos rurales en Pesos Argentinos.
+            Mercado de Cañuelas. 
+            Datos sumistrados por 
+            <a href="{data.url}" target="_blank">Mercado Agroganadero</a>. 
+            <br>
+            Actualizado: {last_update}.
+            <br>
+            Origen: {source}.
+        </div>
+      </div>
     {/if}
   </div>
-</div>
-<div class="row center m-2">
-  <div class="col">
-    <div class="notes">
-      Indice novillo mensual para arrendamientos rurales en Pesos Argentinos.
-      Mercado de Cañuelas. 
-      Datos sumistrados por 
-      <a href="{data.url}" target="_blank">Mercado Agroganadero</a>. 
-      Actualizado: {new Date(data['last_update']).toString()}.
-    </div>
-  </div>
-</div>
+</div><!--scrollable-->
+
 <div class="row center m-2">
   <div class="col">    
-    <button class="btn btn-success btn-lgl w100"
+    {#if offline}
+    <div class="alert alert-danger d-flex align-items-center"
+       role="alert">
+      <i class="bi-exclamation-triangle" />
+      <div>&nbsp;
+        No internet detected, working offline.
+      </div>
+    </div>
+    {:else}
+    <button 
+        class="btn btn-success btn-lg w100 mb-3"
+        aria-label="Refresh"
         on:click={()=>getData(false)}>
         <i class="bi-arrow-repeat"/>
     </button>
-    <br>
-    <br>
+    {/if}
   </div>
 </div>
+
 <div class="footer">
   =
 </div>
-</div>
+
+</div><!--full-->
 
 
 
 <style>
-  .main {
-    padding: 0;
-  }
-  .container {
+  .content {
     padding: 40px;
+    padding-top: 20px;
   }
   .center {
     text-align: center;
+  }
+  .shadow {
+    box-shadow: 20px 20px 10px grey;
   }
   h1 {
     background-color: darkgreen;
     color: white;
     padding: 20px;
+    margin: 0;
     text-align: center;
   }
   .period {
