@@ -6,17 +6,23 @@
   import {working} from './store'
   import Working from './Working.svelte';
   import { registerSW } from 'virtual:pwa-register'
+  import ReloadPrompt from './ReloadPrompt.svelte';
 
 
   let url = import.meta.env.VITE_PUBLIC_BASE_URL;
+  let version = import.meta.env.VITE_PUBLIC_VERSION;
   let data = {}
   let error;
   let last_update;
   let source;
   let offline = false;
   
+  const intervalMS = 60 * 60 * 1000
+
+
   onMount(async () => {
-     await getData(true);      
+    //console.log('onMount...');
+    await getData(true);      
   });
 
   const getMonthKey = () => {
@@ -24,14 +30,32 @@
     const year = date.getFullYear();
     const month = ('0' + (date.getMonth() + 1)).substring(-2);
     const key = [year, month].join('');
-    console.log(key);
+    //console.log(key);
     return key;
   }
-  const updateSW = registerSW({
+
+  registerSW({
     immediate: true,
-    onOfflineReady() {
-      console.log('offline ready');
-    },
+    onRegisteredSW(swUrl, r) {
+      r && setInterval(async () => {
+        if (!(!r.installing && navigator))
+          return
+        if (('connection' in navigator) && !navigator.onLine)
+          return
+        console.log('updating:', swUrl);
+        const resp = await fetch(swUrl, {
+          cache: 'no-store',
+          headers: {
+            'cache': 'no-store',
+            'cache-control': 'no-cache',
+          },
+        })
+        if (resp?.status === 200) {
+          console.log('onRegisteredSW update...');              
+          await r.update()
+        }
+      }, intervalMS)
+    }
   });
 
   window.addEventListener("offline", (e) => {
@@ -51,7 +75,7 @@
         source = "Cache";
         last_update = data.last_update ? 
            new Date(data.last_update).toString(): 'n/a'; 
-        console.log('data from local storge');
+        //console.log('data from local storge');
         return;
       }
     }
@@ -97,7 +121,7 @@
 
 <div class="full">
 <div class="header">
-  v1.0.3
+  v{version}
 </div>
 
 <h1>Indice de Arrenamiento Mensual</h1>
@@ -147,7 +171,7 @@
     </div>
     {:else}
     <button 
-        class="btn btn-success btn-lg w100 mb-3"
+        class="btn btn-light btn-lg w100 mb-3"
         aria-label="Refresh"
         on:click={()=>getData(false)}>
         <i class="bi-arrow-repeat"/>
@@ -155,6 +179,8 @@
     {/if}
   </div>
 </div>
+
+<ReloadPrompt />
 
 <div class="footer">
   =

@@ -73,7 +73,7 @@ def get_data(date):
     url = f'{URL}?txtFechaIni={start}&txtFechaFin={end}'
     try:
         r = requests.get(url)
-        html = bs4.BeautifulSoup(r.text)
+        html = bs4.BeautifulSoup(r.text, features='html.parser')
         value = int(html.body.find_all('td')[-2].text.replace('.','').replace(',',''))/1000
     except:
         value = 'n/a'
