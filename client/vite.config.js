@@ -11,7 +11,7 @@ export default defineConfig({
       devOptions: {
         enabled: true
       },
-      
+
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}']
       },
@@ -33,14 +33,17 @@ export default defineConfig({
           {
             "src": "images/circle.svg",
             "sizes": "72x72",
+            "type": "image/svg+xml",            
             "purpose": "maskable"
           },
           {
             "src": "images/tire.svg",
+            "type": "image/svg+xml",            
             "sizes": "128x128"
           },
           {
             "src": "images/wheel.svg",
+            "type": "image/svg+xml",            
             "sizes": "512x512"
           }
         ],
