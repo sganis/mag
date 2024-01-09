@@ -18,7 +18,7 @@
   export const getData = async (cache) => {
     try {
         $working = true;
-        let api = `${url}api?refresh=${cache}`;
+        let api = `${url}api?cache=${cache}`;
         
         const r = await fetch(api, {
             headers: {
@@ -44,7 +44,7 @@
 
 <div class="full">
 <div class="header">
-  =
+  v1.0.3
 </div>
   
 <div class="scrollable main">
@@ -72,8 +72,8 @@
       Indice novillo mensual para arrendamientos rurales en Pesos Argentinos.
       Mercado de Cañuelas. 
       Datos sumistrados por 
-      <a href="{data.url}" target="_blank">Mercado Agroganadero</a> 
-      el {data['last_update']}.
+      <a href="{data.url}" target="_blank">Mercado Agroganadero</a>. 
+      Actualizado: {new Date(data['last_update']).toString()}.
     </div>
   </div>
 </div>
@@ -83,10 +83,12 @@
         on:click={()=>getData(false)}>
         <i class="bi-arrow-repeat"/>
     </button>
+    <br>
+    <br>
   </div>
 </div>
 <div class="footer">
-  v1.0.2
+  =
 </div>
 </div>
 
