@@ -5,8 +5,8 @@
   import { onMount } from 'svelte';
   import {working} from './store'
   import Working from './Working.svelte';
-  import { registerSW } from 'virtual:pwa-register'
-  import ReloadPrompt from './ReloadPrompt.svelte';
+  //import { registerSW } from 'virtual:pwa-register'
+  //import ReloadPrompt from './ReloadPrompt.svelte';
 
 
   let url = import.meta.env.VITE_PUBLIC_BASE_URL;
@@ -19,6 +19,9 @@
   
   const intervalMS = 60 * 60 * 1000
 
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("/sw.js");
+  }
 
   onMount(async () => {
     //console.log('onMount...');
@@ -34,35 +37,37 @@
     return key;
   }
 
-  registerSW({
-    immediate: true,
-    onRegisteredSW(swUrl, r) {
-      r && setInterval(async () => {
-        if (!(!r.installing && navigator))
-          return
-        if (('connection' in navigator) && !navigator.onLine)
-          return
-        console.log('updating:', swUrl);
-        const resp = await fetch(swUrl, {
-          cache: 'no-store',
-          headers: {
-            'cache': 'no-store',
-            'cache-control': 'no-cache',
-          },
-        })
-        if (resp?.status === 200) {
-          console.log('onRegisteredSW update...');              
-          await r.update()
-        }
-      }, intervalMS)
-    }
-  });
+  // registerSW({
+  //   immediate: true,
+  //   onRegisteredSW(swUrl, r) {
+  //     r && setInterval(async () => {
+  //       if (!(!r.installing && navigator))
+  //         return
+  //       if (('connection' in navigator) && !navigator.onLine)
+  //         return
+  //       console.log('updating:', swUrl);
+  //       const resp = await fetch(swUrl, {
+  //         cache: 'no-store',
+  //         headers: {
+  //           'cache': 'no-store',
+  //           'cache-control': 'no-cache',
+  //         },
+  //       })
+  //       if (resp?.status === 200) {
+  //         console.log('onRegisteredSW update...');              
+  //         await r.update()
+  //       }
+  //     }, intervalMS)
+  //   }
+  // });
 
   window.addEventListener("offline", (e) => {
+    console.log('app is offline');
     offline = true;
   });
 
   window.addEventListener("online", (e) => {
+    console.log('back online');
     offline = false;
   });
 
@@ -180,7 +185,7 @@
   </div>
 </div>
 
-<ReloadPrompt />
+<!-- <ReloadPrompt /> -->
 
 <div class="footer">
   =
