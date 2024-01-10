@@ -10,7 +10,7 @@
 
 
   let url = import.meta.env.VITE_PUBLIC_BASE_URL;
-  let version = import.meta.env.VITE_PUBLIC_VERSION;
+  let version = import.meta.env.VITE_PUBLIC_VERSION||'-dev';
   let data = {}
   let error;
   let last_update;
