@@ -1,6 +1,4 @@
-const version = '1.0.0';
-const appPrefix = 'mag-v';
-const cacheName = appPrefix + version;
+const cacheName = 'mag-1.0';
 
 // self.addEventListener('message', event => {
 //   console.log('message:', event.data);
@@ -26,7 +24,7 @@ self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => {
       return Promise.all(keys
-        .filter(key => key.startsWith(appPrefix))
+        .filter(key => key.startsWith(cacheName))
         .map(key => caches.delete(key))
       );
     })

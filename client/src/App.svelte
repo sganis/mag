@@ -126,6 +126,7 @@
     }
   }
   const updateNow = async () => {
+    
     window.location.reload();
   }
 
@@ -197,6 +198,12 @@
         on:click={()=>getData(false)}>
         <i class="bi-arrow-repeat"/>
     </button>
+    <button 
+    class="btn btn-light btn-lg w100 mb-3"
+    aria-label="Refresh"
+    on:click={updateNow}>
+    Reload
+</button>
     {/if}
   </div>
 </div>
