@@ -128,6 +128,13 @@
   const updateNow = async () => {
     console.log(await getCacheSize());
     console.log('clearing cache...');
+    navigator.serviceWorker
+    .getRegistrations()
+    .then(function (registrations) {
+        for (let registration of registrations) {
+          registration.unregister()
+        }
+    })
     caches.keys().then(keys => {
       return Promise.all(keys
         .filter(key => key.startsWith('mag-1.0'))
@@ -158,7 +165,7 @@
     return `Total Cache Storage: ${total} bytes`;
   }
 
-  
+
 </script>
 
 <div class="full">
