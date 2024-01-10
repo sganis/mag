@@ -31,9 +31,13 @@ app.add_middleware(
 )
 
 
-@app.get("/version")
+@app.get("/api/version")
 def get_version():
-    return '1.0.0'
+    try:
+        with open(f'{DIR}/version.txt') as r:
+            return r.read().strip()
+    except:
+        return '1.0.0'
 
 
 @app.get("/api")

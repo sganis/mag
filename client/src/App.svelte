@@ -11,6 +11,7 @@
 
   let url = import.meta.env.VITE_PUBLIC_BASE_URL;
   let version = import.meta.env.VITE_PUBLIC_VERSION||'-dev';
+  let serverVersion;
   let data = {}
   let error;
   let last_update;
@@ -25,6 +26,7 @@
 
   onMount(async () => {
     //console.log('onMount...');
+    checkVersion();
     await getData(true);      
   });
 
@@ -37,30 +39,6 @@
     return key;
   }
 
-  // registerSW({
-  //   immediate: true,
-  //   onRegisteredSW(swUrl, r) {
-  //     r && setInterval(async () => {
-  //       if (!(!r.installing && navigator))
-  //         return
-  //       if (('connection' in navigator) && !navigator.onLine)
-  //         return
-  //       console.log('updating:', swUrl);
-  //       const resp = await fetch(swUrl, {
-  //         cache: 'no-store',
-  //         headers: {
-  //           'cache': 'no-store',
-  //           'cache-control': 'no-cache',
-  //         },
-  //       })
-  //       if (resp?.status === 200) {
-  //         console.log('onRegisteredSW update...');              
-  //         await r.update()
-  //       }
-  //     }, intervalMS)
-  //   }
-  // });
-
   window.addEventListener("offline", (e) => {
     console.log('app is offline');
     offline = true;
@@ -71,7 +49,7 @@
     offline = false;
   });
 
-  export const getData = async (cache) => {
+  const getData = async (cache) => {
     const key = getMonthKey();
 
     if (cache) {
@@ -119,14 +97,47 @@
     }
   }
 
-
-
+  const checkVersion = async () => {
+    try {
+        //$working = true;
+        let api = `${url}api/version`;        
+        const r = await fetch(api, {
+            headers: {
+                //'Authorization': 'Bearer '+$state.token
+            }
+        });
+        const js = await r.json();
+        if (r.status === 200) {
+            serverVersion = js;
+        } else {
+            error = js.detail;
+        }
+    }
+    catch (err) {
+        console.log(err)
+    }
+    finally {
+        //$working = false;
+    }
+  }
+  const updateNow = async () => {
+    window.location.reload();
+  }
 
 </script>
 
 <div class="full">
 <div class="header">
+  {#if version !== serverVersion}
+  <div class="d-flex justify-content-between">
+  New version available: {version} =&gt; {serverVersion}
+  <button class="btn btn-sm btn-success"
+    on:click={updateNow}
+    >Update Now</button>
+  </div>
+  {:else}
   v{version}
+  {/if}
 </div>
 
 <h1>Indice de Arrenamiento Mensual</h1>
