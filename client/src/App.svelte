@@ -44,9 +44,15 @@
     offline = true;
   });
 
+
   window.addEventListener("online", (e) => {
     console.log('back online');
     offline = false;
+  });
+
+  window.navigator.serviceWorker.addEventListener("controllerchange", e => {
+   // The service worker controller has changed
+   console.log('sw controller changed');
   });
 
   const getData = async (cache) => {
@@ -96,7 +102,6 @@
         $working = false;
     }
   }
-
   const checkVersion = async () => {
     try {
         //$working = true;
@@ -128,7 +133,7 @@
 
 <div class="full">
 <div class="header">
-  {#if version !== serverVersion}
+  {#if serverVersion && version !== serverVersion}
   <div class="d-flex justify-content-between">
   New version available: {version} =&gt; {serverVersion}
   <button class="btn btn-sm btn-success"

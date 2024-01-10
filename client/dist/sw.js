@@ -10,14 +10,13 @@ const cacheName = appPrefix + version;
 //   }
 // });
 
+
 self.addEventListener('install', event => {
   console.log('sw installed');
-  event.waitUntil(
-    caches.open("pwa-assets")
-    .then(cache => {
-       return cache.addAll(['/','/index.html']);
-    })
-  );
+  event.waitUntil((async () => {
+    const cache = await caches.open(cacheName);
+    cache.addAll(['/','/index.html']);
+  })());
   // activate inmediatelly
   self.skipWaiting();
 });
@@ -32,6 +31,7 @@ self.addEventListener('activate', event => {
       );
     })
   );
+  return clients.claim();
 });
 
 const cachePatterns = [
@@ -61,12 +61,12 @@ self.addEventListener('fetch', (event) => {
     try {
         const cachedResponse = await cache.match(event.request);
         if(cachedResponse) {
-            console.log('cachedResponse: ', event.request.url);
+            console.log('cached: ', url.pathname);
             return cachedResponse;
         }
         const fetchResponse = await fetch(event.request);
         if(fetchResponse) {
-            console.log('fetchResponse: ', event.request.url);
+            console.log('fetch: ', url.pathname);
             if (canBeCached(url))
               await cache.put(event.request, fetchResponse.clone());
             return fetchResponse;
