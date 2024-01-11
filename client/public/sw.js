@@ -1,4 +1,4 @@
-// version = 1.0.53 // modified by deploy.py.
+// version = 1.0.54 // modified by deploy.py.
 const cacheName = 'mag-1.0';
 
 // self.addEventListener('message', event => {
@@ -24,6 +24,7 @@ self.addEventListener('install', event => {
     self.skipWaiting();
   })());
 });
+
 
 self.addEventListener('activate', event => {
   console.log('sw activated, deleting cache...');
@@ -81,7 +82,7 @@ self.addEventListener('fetch', (event) => {
             await cache.put(event.request, fetchResponse.clone());
         }
         if(cachedResponse) {
-          console.log('cached: ', url.pathname);
+          //console.log('cached: ', url.pathname);
           return cachedResponse;
         } else {
           console.log('fetch: ', url.pathname);

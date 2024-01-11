@@ -65,6 +65,7 @@
   window.navigator.serviceWorker.addEventListener("controllerchange", e => {
    // The service worker controller has changed
    console.log('sw controller changed');
+   //window.location.reload();
   });
 
   const getData = async (cache) => {
