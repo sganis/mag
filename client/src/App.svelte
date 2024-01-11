@@ -126,11 +126,10 @@
     }
   }
   const updateNow = async () => {
+    $working = true;
     console.log(await getCacheSize());
     console.log('clearing cache...');
-    navigator.serviceWorker
-    .getRegistrations()
-    .then(function (registrations) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
         for (let registration of registrations) {
           registration.unregister()
         }
@@ -145,7 +144,7 @@
     window.location.reload();
   }
 
-  async function getCacheSize() {
+  const getCacheSize = async () => {
     // Note: opaque (i.e. cross-domain, without CORS) responses in the cache will return a size of 0.
     const cacheNames = await caches.keys();
     let total = 0;
@@ -170,16 +169,32 @@
 
 <div class="full">
 <div class="header">
-  {#if serverVersion && version !== serverVersion}
   <div class="d-flex justify-content-between">
-  New version available: {version} =&gt; {serverVersion}
+  {#if serverVersion && version !== serverVersion}
+  New version 
   <button class="btn btn-sm btn-success"
     on:click={updateNow}
     >Update Now</button>
-  </div>
   {:else}
   v{version}
   {/if}
+  <div class="dropdown">
+    <button class="btn btn-outline-light border-0" 
+      type="button" data-bs-toggle="dropdown" 
+      aria-expanded="false">
+      <i class="bi-three-dots"/>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-dark">
+      <li><p class="ms-3 mb-0">Version: {version}</p></li>
+      <li><hr class="dropdown-divider mb-0"></li>
+      <li><a class="dropdown-item" href="#/" on:click={updateNow}>
+        Update Now  
+      </a></li>
+      <li><a class="dropdown-item" href="#/">Something else here</a></li>
+      <li><a class="dropdown-item" href="#/">Separated link</a></li>
+    </ul>
+  </div>
+</div>
 </div>
 
 <h1>Indice de Arrenamiento Mensual</h1>
@@ -231,15 +246,17 @@
     <button 
         class="btn btn-light btn-lg w100 mb-3"
         aria-label="Refresh"
+        disabled={$working}
         on:click={()=>getData(false)}>
         <i class="bi-arrow-repeat"/>
     </button>
-    <button 
-    class="btn btn-light btn-lg w100 mb-3"
-    aria-label="Refresh"
-    on:click={updateNow}>
-    Reload
-</button>
+    <!-- <button 
+        class="btn btn-light btn-lg w100 mb-3"
+        aria-label="Refresh"
+        disabled={$working}
+        on:click={updateNow}>
+        Reload
+    </button> -->
     {/if}
   </div>
 </div>

@@ -59,7 +59,7 @@ self.addEventListener('fetch', (event) => {
     try {
         const cachedResponse = await cache.match(event.request);
         if(cachedResponse) {
-            console.log('cached: ', url.pathname);
+            //console.log('cached: ', url.pathname);
             return cachedResponse;
         }
         const fetchResponse = await fetch(event.request);
