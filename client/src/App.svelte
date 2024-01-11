@@ -290,7 +290,7 @@
     box-shadow: 20px 20px 10px grey;
   }
   h1 {
-    background-color: darkorange;
+    background-color: darkcyan;
     color: white;
     padding: 20px;
     margin: 0;
