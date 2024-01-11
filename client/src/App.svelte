@@ -257,7 +257,7 @@
     </div>
     {:else}
     <button 
-        class="btn btn-light btn-lg w100 mb-3"
+        class="btn btn-light btn-lg w100 mb-4"
         aria-label="Refresh"
         disabled={$working}
         on:click={()=>getData(false)}>
