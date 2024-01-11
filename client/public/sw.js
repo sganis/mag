@@ -1,4 +1,4 @@
-// version = 1.0.46 // modified by deploy.py.
+// version = 1.0.48 // modified by deploy.py.
 const cacheName = 'mag-1.0';
 
 // self.addEventListener('message', event => {
@@ -43,14 +43,8 @@ self.addEventListener('activate', event => {
           windowClient.navigate(windowClient.url);
         });
       }))
-    .then(() => self.clients.claim())
+    //.then(() => self.clients.claim())
   );
-  // Optional: Get a list of all the current open windows/tabs under
-  // our service worker's control, and force them to reload.
-  // This can "unbreak" any open windows/tabs as soon as the new
-  // service worker activates, rather than users having to manually reload.
-  
-  //return clients.claim();
 });
 
 const cachePatterns = [
@@ -58,6 +52,7 @@ const cachePatterns = [
   '.png','.js','.css','.woff',
   'manifest.json'
 ];
+
 
 const canBeCached = (url) => {
   if (location.origin !== url.origin)
@@ -94,8 +89,9 @@ self.addEventListener('fetch', (event) => {
         }
     } catch (error) {
         console.log('Fetch failed: ', error);
-        const cachedResponse = await cache.match('/index.html');
+        const cachedResponse = await cache.match('/');
         return cachedResponse;
     }
   })());
 });
+

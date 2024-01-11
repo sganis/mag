@@ -18,6 +18,10 @@
   let source;
   let offline = false;
   let updating = false;
+  let colors = ['darkgreen','darkblue','maroon'];
+  let patch = version.split('.')[2];
+  let colorIndex = Number(patch) % 3;
+  let color = colors[colorIndex];
   
   const checkUpdateInterval = 1 * 60 * 1000
 
@@ -206,7 +210,7 @@
 </div>
 </div>
 
-<h1 class:dimmed={updating}>Indice de Arrenamiento Mensual</h1>
+<h1 style="--theme-color: {color}" class:dimmed={updating}>Indice de Arrenamiento Mensual</h1>
 <div class="scrollable"> 
   <div class="content">  
     {#if $working}
@@ -292,7 +296,7 @@
     box-shadow: 20px 20px 10px grey;
   }
   h1 {
-    background-color: darkgreen;
+    background-color: var(--theme-color);
     color: white;
     padding: 20px;
     margin: 0;
