@@ -1,4 +1,4 @@
-// version = 1.0.31 // modified by deploy.py.
+// version = 1.0.32 // modified by deploy.py.
 const cacheName = 'mag-1.0';
 
 // self.addEventListener('message', event => {
@@ -71,23 +71,24 @@ const canBeCached = (url) => {
   return false;
 }
 
+// stale with revalidate strategy
 self.addEventListener('fetch', (event) => {
   event.respondWith((async() => {
     const url = new URL(event.request.url);
     const cache = await caches.open(cacheName);
     try {
         const cachedResponse = await cache.match(event.request);
-        if(cachedResponse) {
-            //console.log('cached: ', url.pathname);
-            return cachedResponse;
-        }
+        // if(cachedResponse) {
+        //     //console.log('cached: ', url.pathname);
+        //     return cachedResponse;
+        // }
         const fetchResponse = await fetch(event.request);
         if(fetchResponse) {
             console.log('fetch: ', url.pathname);
             if (canBeCached(url))
               await cache.put(event.request, fetchResponse.clone());
-            return fetchResponse;
         }
+        return cachedResponse || fetchResponse;
     } catch (error) {
         console.log('Fetch failed: ', error);
         const cachedResponse = await cache.match('/index.html');
