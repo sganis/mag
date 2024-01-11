@@ -1,4 +1,4 @@
-// version = 1.0.45 // modified by deploy.py.
+// version = 1.0.46 // modified by deploy.py.
 const cacheName = 'mag-1.0';
 
 // self.addEventListener('message', event => {
@@ -54,7 +54,7 @@ self.addEventListener('activate', event => {
 });
 
 const cachePatterns = [
-  '/index.html', '/favicon.ico',
+  '/favicon.ico',
   '.png','.js','.css','.woff',
   'manifest.json'
 ];
