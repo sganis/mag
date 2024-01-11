@@ -45,12 +45,17 @@
       }
     </style>
     <title>MAG</title>
-    <script type="module" crossorigin src="/assets/index-NUkxqEMA.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-4BTeC4MB.css">
+    <script type="module" crossorigin src="/assets/index.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index.css">
   </head>
   <body>
     <div id="app"></div>
     <noscript>Please enable JavaScript to continue using this application.</noscript>
-    <button class="emergency-reload-button" onClick="window.location.reload(true)">Reload</button>
+    <button class="emergency-reload-button" 
+      href="#"
+      onClick="(function(){
+        window.location.href = window.location.href;
+        return false;
+      })();return false;">Reload</button>
   </body>
 </html>

@@ -6,16 +6,15 @@ import { svelte } from '@sveltejs/vite-plugin-svelte'
 export default defineConfig({
   plugins: [
     svelte(),
-    // VitePWA({ 
-    //   registerType: 'autoUpdate',
-    //   devOptions: {
-    //     enabled: true
-    //   },
-    //   workbox: {
-    //     globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}']
-    //   },
-    //   includeAssets: ['favicon.ico']
-    // })
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`
+      }
+    }
+  }
 })
 
