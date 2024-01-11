@@ -1,4 +1,4 @@
-// version = 1.0.43 // modified by deploy.py.
+// version = 1.0.44 // modified by deploy.py.
 const cacheName = 'mag-1.0';
 
 // self.addEventListener('message', event => {
@@ -15,39 +15,41 @@ self.addEventListener('install', event => {
     const cache = await caches.open(cacheName);
     cache.addAll([
       '/',
-      //'/index.html',
+      '/index.html',
       // '/assets/bootstrap-icons.woff2',
       // '/assets/bootstrap-icons.woff',
       // '/assets/index.css',
       // '/assets/index.js',
     ]);
+    self.skipWaiting();
   })());
-  // activate inmediatelly
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
   console.log('sw activated, deleting cache...');
   event.waitUntil(
-    caches.keys().then(keys => {
+    caches.keys()
+    .then(keys => {
       return Promise.all(keys
         .filter(key => key.startsWith(cacheName))
         .map(key => caches.delete(key))
       );
     })
+    .then(() => self.clients.matchAll({
+        type: 'window'
+      }).then(windowClients => {
+        console.log('sw reloading all windows...');
+        windowClients.forEach((windowClient) => {
+          windowClient.navigate(windowClient.url);
+        });
+      }))
+    .then(() => self.clients.claim())
   );
   // Optional: Get a list of all the current open windows/tabs under
   // our service worker's control, and force them to reload.
   // This can "unbreak" any open windows/tabs as soon as the new
   // service worker activates, rather than users having to manually reload.
-  self.clients.matchAll({
-    type: 'window'
-  }).then(windowClients => {
-    console.log('sw reloading all windows...');
-    windowClients.forEach((windowClient) => {
-      windowClient.navigate(windowClient.url);
-    });
-  });
+  
   //return clients.claim();
 });
 
