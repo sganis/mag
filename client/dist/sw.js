@@ -8,7 +8,6 @@ const cacheName = 'mag-1.0';
 //   }
 // });
 
-
 self.addEventListener('install', event => {
   console.log('sw installed');
   event.waitUntil((async () => {
