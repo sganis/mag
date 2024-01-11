@@ -138,11 +138,11 @@
     updating = true;
     console.log(await getCacheSize());
     console.log('clearing cache...');
-    // navigator.serviceWorker.getRegistrations().then((registrations) => {
-    //     for (let registration of registrations) {
-    //       registration.unregister()
-    //     }
-    // })
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (let registration of registrations) {
+          registration.unregister()
+        }
+    })
     caches.keys().then(keys => {
       return Promise.all(keys
         .filter(key => key.startsWith('mag-1.0'))
