@@ -29,7 +29,19 @@ self.addEventListener('activate', event => {
       );
     })
   );
-  return clients.claim();
+  // Optional: Get a list of all the current open windows/tabs under
+  // our service worker's control, and force them to reload.
+  // This can "unbreak" any open windows/tabs as soon as the new
+  // service worker activates, rather than users having to manually reload.
+  self.clients.matchAll({
+    type: 'window'
+  }).then(windowClients => {
+    console.log('sw reloading all windows...');
+    windowClients.forEach((windowClient) => {
+      windowClient.navigate(windowClient.url);
+    });
+  });
+  //return clients.claim();
 });
 
 const cachePatterns = [

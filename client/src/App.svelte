@@ -17,6 +17,7 @@
   let last_update;
   let source;
   let offline = false;
+  let updating = false;
   
   const intervalMS = 60 * 60 * 1000
 
@@ -25,7 +26,6 @@
   }
 
   onMount(async () => {
-    //console.log('onMount...');
     checkVersion();
     await getData(true);      
   });
@@ -127,13 +127,14 @@
   }
   const updateNow = async () => {
     $working = true;
+    updating = true;
     console.log(await getCacheSize());
     console.log('clearing cache...');
-    navigator.serviceWorker.getRegistrations().then((registrations) => {
-        for (let registration of registrations) {
-          registration.unregister()
-        }
-    })
+    // navigator.serviceWorker.getRegistrations().then((registrations) => {
+    //     for (let registration of registrations) {
+    //       registration.unregister()
+    //     }
+    // })
     caches.keys().then(keys => {
       return Promise.all(keys
         .filter(key => key.startsWith('mag-1.0'))
@@ -141,7 +142,7 @@
       );      
     })
     console.log(await getCacheSize());
-    window.location.reload();
+    window.location.href= "/";
   }
 
   const getCacheSize = async () => {
@@ -176,10 +177,10 @@
     on:click={updateNow}
     >Update Now</button>
   {:else}
-  v{version}
+  &nbsp;
   {/if}
   <div class="dropdown">
-    <button class="btn btn-outline-light border-0" 
+    <button class="btn btn-outline-light border-0 bg-transparent btn-dots" 
       type="button" data-bs-toggle="dropdown" 
       aria-expanded="false">
       <i class="bi-three-dots"/>
@@ -190,14 +191,12 @@
       <li><a class="dropdown-item" href="#/" on:click={updateNow}>
         Update Now  
       </a></li>
-      <li><a class="dropdown-item" href="#/">Something else here</a></li>
-      <li><a class="dropdown-item" href="#/">Separated link</a></li>
     </ul>
   </div>
 </div>
 </div>
 
-<h1>Indice de Arrenamiento Mensual</h1>
+<h1 class:dimmed={updating}>Indice de Arrenamiento Mensual</h1>
 <div class="scrollable"> 
   <div class="content">  
     {#if $working}
@@ -264,7 +263,7 @@
 <!-- <ReloadPrompt /> -->
 
 <div class="footer">
-  =
+  &nbsp;
 </div>
 
 </div><!--full-->
@@ -283,7 +282,7 @@
     box-shadow: 20px 20px 10px grey;
   }
   h1 {
-    background-color: darkblue;
+    background-color: maroon;
     color: white;
     padding: 20px;
     margin: 0;
@@ -319,5 +318,11 @@
   }
   .w100 {
     width: 100px;
+  }
+  .btn-dots{
+    color: gainsboro;
+  }
+  .dimmed {
+    opacity: 0.3;
   }
 </style>
