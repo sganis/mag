@@ -2,7 +2,7 @@
   "name": "MAG",
   "short_name": "MAG",
   "start_url": ".",
-  "display": "minimal-ui",
+  "display": "fullscreen",
   "background_color": "#FFFFFF",
   "theme_color": "#FFFFFF",
   "description": "Indice de arrendamiento para campos",
