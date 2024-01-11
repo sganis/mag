@@ -10,6 +10,7 @@ import calendar
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 
+DIR = os.path.dirname(os.path.abspath(__file__))
 
 URL = 'https://www.mercadoagroganadero.com.ar/dll/hacienda2.dll/haciinfo000013'
 MONTHS = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
@@ -34,8 +35,10 @@ app.add_middleware(
 @app.get("/api/version")
 def get_version():
     try:
-        with open(f'{DIR}/version.txt') as r:
-            return r.read().strip()
+        with open(f'{DIR}/../client/.env.production') as r:
+            for line in r:
+                if 'VERSION' in line:
+                    return line.split('=')[1].strip().strip('"')
     except:
         return '1.0.0'
 
@@ -94,7 +97,6 @@ def get_data(date):
     CACHE[period] = data
     return data 
 
-DIR = os.path.dirname(os.path.abspath(__file__))
 
 app.mount('/', StaticFiles(directory=f'{DIR}/../client/dist', html=True), name='client')
 

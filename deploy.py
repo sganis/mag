@@ -4,6 +4,8 @@ import os
 import json
 import subprocess
 
+DIR = os.path.dirname(os.path.abspath(__file__))
+
 def run(cmd):
     subprocess.run(cmd, shell=True, check=True)
 
@@ -11,8 +13,14 @@ def run(cmd):
 #     js = json.loads(r.read())
 # version = js['version']
 
-with open('./api/version.txt') as r:
-    version = r.read().strip()
+# with open('./api/version.txt') as r:
+#     version = r.read().strip()
+    
+with open(f'{DIR}/client/.env.production') as r:
+    for line in r:
+        if 'VERSION' in line:
+            version = line.split('=')[1].strip().strip('"')
+
 assert version
 
 print(f'deploying v{version}...')
