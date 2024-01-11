@@ -19,7 +19,7 @@
   let offline = false;
   let updating = false;
   
-  const intervalMS = 60 * 60 * 1000
+  const checkUpdateInterval = 1 * 60 * 1000
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register("/sw.js");
@@ -29,6 +29,11 @@
     checkVersion();
     await getData(true);      
   });
+
+  setInterval(async () => {
+    console.log('checking for update');
+    await checkVersion();
+  }, checkUpdateInterval);
 
   const getMonthKey = () => {
     const date = new Date();
