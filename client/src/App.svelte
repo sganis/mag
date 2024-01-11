@@ -150,7 +150,7 @@
       );      
     })
     console.log(await getCacheSize());
-    window.location.href= "/";
+    window.location.reload();
   }
 
   const getCacheSize = async () => {

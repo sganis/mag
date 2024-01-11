@@ -52,10 +52,7 @@
     <noscript>Please enable JavaScript to continue using this application.</noscript>
     <button class="emergency-reload-button" 
       href="#"
-      onClick="(function(){
-        window.location.href = window.location.href;
-        return false;
-      })();return false;">Reload</button>
+      onClick="window.location.reload(true);">Reload</button>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
