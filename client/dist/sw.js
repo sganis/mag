@@ -1,4 +1,4 @@
-// version = 1.0.32 // modified by deploy.py.
+// version = 1.0.33 // modified by deploy.py.
 const cacheName = 'mag-1.0';
 
 // self.addEventListener('message', event => {
@@ -78,17 +78,18 @@ self.addEventListener('fetch', (event) => {
     const cache = await caches.open(cacheName);
     try {
         const cachedResponse = await cache.match(event.request);
-        // if(cachedResponse) {
-        //     //console.log('cached: ', url.pathname);
-        //     return cachedResponse;
-        // }
         const fetchResponse = await fetch(event.request);
         if(fetchResponse) {
-            console.log('fetch: ', url.pathname);
-            if (canBeCached(url))
-              await cache.put(event.request, fetchResponse.clone());
+          if (canBeCached(url))
+            await cache.put(event.request, fetchResponse.clone());
         }
-        return cachedResponse || fetchResponse;
+        if(cachedResponse) {
+          console.log('cached: ', url.pathname);
+          return cachedResponse;
+        } else {
+          console.log('fetch: ', url.pathname);
+          return fetchResponse;
+        }
     } catch (error) {
         console.log('Fetch failed: ', error);
         const cachedResponse = await cache.match('/index.html');
