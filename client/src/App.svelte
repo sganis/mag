@@ -49,10 +49,13 @@
     offline = true;
   });
 
-
   window.addEventListener("online", (e) => {
     console.log('back online');
     offline = false;
+  });
+  
+  document.addEventListener('visibilitychange', () => {
+    console.log('visibility changed', document.visibilityState);
   });
 
   window.navigator.serviceWorker.addEventListener("controllerchange", e => {
