@@ -1,11 +1,16 @@
 {
   "name": "MAG",
   "short_name": "MAG",
-  "start_url": ".",
+  "start_url": "/",
   "display": "fullscreen",
   "background_color": "#FFFFFF",
   "theme_color": "#FFFFFF",
   "description": "Indice de arrendamiento para campos",
+  "id": "mag-1.0",
+  "dir": "auto",
+  "scope": "/",
+  "lang": "es",
+  "orientation": "any",
   "icons": [
     {
       "src": "/images/pwa-192x192.png",
