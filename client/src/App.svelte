@@ -185,7 +185,7 @@
     on:click={updateNow}
     >Update Now</button>
   {:else}
-  &nbsp;
+  v{version}
   {/if}
   <div class="dropdown">
     <button class="btn btn-outline-light border-0 bg-transparent btn-dots" 
@@ -196,9 +196,11 @@
     <ul class="dropdown-menu dropdown-menu-dark">
       <li><p class="ms-3 mb-0">Version: {version}</p></li>
       <li><hr class="dropdown-divider mb-0"></li>
+      {#if serverVersion !== version}
       <li><a class="dropdown-item" href="#/" on:click={updateNow}>
-        Update Now  
+        Get v{serverVersion} 
       </a></li>
+      {/if}
     </ul>
   </div>
 </div>
