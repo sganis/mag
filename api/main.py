@@ -19,6 +19,7 @@ CACHE = {}
 
 app = FastAPI()
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins = [
@@ -30,6 +31,7 @@ app.add_middleware(
     allow_methods = ["*"],
     allow_headers = ["*"],
 )
+
 
 
 @app.get("/api/version")
@@ -54,6 +56,20 @@ def f(cache: bool = True):
     return get_data(date)    
 
 
+@app.get("/api/hist")
+def f():
+    date = datetime.today()
+    y = date.year
+    m = date.month
+    date = datetime.strptime(f'01/{m}/{y}','%d/%m/%Y')
+    hist = []
+    for _ in range(6):
+        prev_month = date-relativedelta(months=1)
+        h = get_data(prev_month)
+        hist.append(h)
+        date = prev_month
+    return hist
+
 @app.get("/api/{month}")
 def f(month: str):
     if len(month) != 6:
@@ -61,7 +77,8 @@ def f(month: str):
     y = month[:4]
     m = month[4:]
     date = datetime.strptime(f'01/{m}/{y}','%d/%m/%Y')
-    return get_data(date)    
+    return get_data(date)  
+
 
 
 def get_data(date):

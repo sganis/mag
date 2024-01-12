@@ -18,20 +18,23 @@
   let source;
   let offline = false;
   let updating = false;
+  let gettingHistory = false;
+  let history = [];
   let colors = ['darkgreen','darkblue','maroon'];
   let patch = version.split('.')[2];
   let colorIndex = Number(patch) % 3;
   let color = colors[colorIndex];
   
-  const checkUpdateInterval = 1 * 60 * 1000
+  const checkUpdateInterval = 60 * 60 * 1000; // 1h
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register("/sw.js");
   }
 
   onMount(async () => {
-    checkVersion();
     await getData(true);      
+    await getHistory();
+    await checkVersion();
   });
 
   setInterval(async () => {
@@ -115,6 +118,33 @@
         $working = false;
     }
   }
+
+  const getHistory = async () => {
+    history = [];
+    try {
+        gettingHistory = true;
+        let api = `${url}api/hist`;
+        const r = await fetch(api, { headers: {
+                //'Authorization': 'Bearer '+$state.token
+            }
+        });
+        const js = await r.json();
+        //console.log(js);
+        if (r.status === 200) {
+            history = js;
+        } else {
+            error = js.detail;
+        }
+    }
+    catch (err) {
+        console.log(err)
+    }
+    finally {
+        gettingHistory = false;
+    }
+  }
+
+
   const checkVersion = async () => {
     try {
         //$working = true;
@@ -230,6 +260,25 @@
       <div class="row">
         <br><br>
       </div>
+      <div class="center">
+        <h2>Meses anteriores</h2>
+      </div>
+      {#if gettingHistory}
+        <div class="center">
+          <Working message=""/>
+        </div>
+      {:else}
+        {#each history as hist}
+        <div class="row">
+          <div class="col text-nowrap">
+            {hist.period}
+          </div>
+          <div class="col text-end">
+            $ {hist.value?.toFixed(2).toLocaleString('fr-FR')}
+          </div>
+        </div>
+        {/each}
+      {/if}
       <div class="center m-1 mt-4">
         <div class="notes">
             Indice novillo mensual para arrendamientos rurales en Pesos Argentinos.
