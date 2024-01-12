@@ -27,9 +27,9 @@
   
   const checkUpdateInterval = 60 * 60 * 1000; // 1h
 
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register("/sw.js");
-  }
+  // if ('serviceWorker' in navigator) {
+  //   navigator.serviceWorker.register("/sw.js");
+  // }
 
   onMount(async () => {
     await getData(true);      
@@ -243,6 +243,7 @@
 
 <h1 style="--theme-color: {color}" class:dimmed={updating}>Indice de Arrenamiento Mensual</h1>
 <div class="scrollable"> 
+  <div class="d-flex justify-content-center">
   <div class="content">  
     {#if $working}
       <div class="center">
@@ -268,16 +269,24 @@
           <Working message=""/>
         </div>
       {:else}
+        <table class="table">
+          <tbody>
         {#each history as hist}
-        <div class="row">
-          <div class="col text-nowrap">
+        <tr>
+          <td class="text-nowrap">
             {hist.period}
-          </div>
-          <div class="col text-end">
-            $ {hist.value?.toFixed(2).toLocaleString('fr-FR')}
-          </div>
-        </div>
+          </td>
+          <td class="text-end">
+            {#if typeof hist.value === 'number'}
+            $ {hist.value.toFixed(2).toLocaleString('fr-FR')}
+            {:else}
+            n/a
+            {/if}
+          </td>
+        </tr>
         {/each}
+      </tbody>
+      </table>
       {/if}
       <div class="center m-1 mt-4">
         <div class="notes">
@@ -293,6 +302,7 @@
       </div>
     {/if}
   </div>
+</div> <!--center-->
 </div><!--scrollable-->
 
 <div class="row center m-2">
@@ -338,10 +348,12 @@
   .content {
     padding: 40px;
     padding-top: 20px;
+    max-width: 500px;  
   }
   .center {
     text-align: center;
   }
+
   .shadow {
     box-shadow: 20px 20px 10px grey;
   }
