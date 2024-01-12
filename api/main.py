@@ -53,7 +53,6 @@ def f(cache: bool = True):
     date = datetime.strptime(f'01/{m}/{y}','%d/%m/%Y')        
     return get_data(date)    
 
-
 @app.get("/api/hist")
 def f():
     date = datetime.today()

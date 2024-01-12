@@ -263,7 +263,7 @@
       </div>
       {#if gettingHistory}
         <div class="center">
-          <Working message=""/>
+          Consultando meses anteriores...
         </div>
       {:else}
         <table class="table table-sm table-font">
