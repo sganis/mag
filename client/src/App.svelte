@@ -266,7 +266,7 @@
           Consultando meses anteriores...
         </div>
       {:else}
-        <table class="table table-sm table-font">
+        <table class="table table-sm table-hist">
           <tbody>
         {#each history as hist}
         <tr>
@@ -290,11 +290,8 @@
             Indice novillo mensual para arrendamientos rurales en Pesos Argentinos.
             Mercado de Cañuelas. 
             Datos sumistrados por 
-            <a href="{data.url}" target="_blank">Mercado Agroganadero</a>. 
-            <br>
-            Actualizado: {last_update}.
-            <br>
-            Origen: {source}.
+            <a href="{data.url}" target="_blank">Mercado Agroganadero</a>.             
+            Actualizado: {last_update}. Origen: {source}.
         </div>
       </div>
     {/if}
@@ -302,7 +299,7 @@
 </div> <!--center-->
 </div><!--scrollable-->
 
-<div class="row center m-2">
+<div class="row center m-3">
   <div class="col">    
     {#if offline}
     <div class="alert alert-danger d-flex align-items-center"
@@ -350,8 +347,9 @@
   .center {
     text-align: center;
   }
-  .table-font {
-    font-size: small;
+  .table-hist {
+    /* font-size: small; */
+  
   }
   .shadow {
     box-shadow: 20px 20px 10px grey;
