@@ -259,17 +259,14 @@
         </div>
       </div>
       <div class="row">
-        <br><br>
-      </div>
-      <div class="center">
-        <h2>Meses anteriores</h2>
+        <br>
       </div>
       {#if gettingHistory}
         <div class="center">
           <Working message=""/>
         </div>
       {:else}
-        <table class="table">
+        <table class="table table-sm table-font">
           <tbody>
         {#each history as hist}
         <tr>
@@ -353,7 +350,9 @@
   .center {
     text-align: center;
   }
-
+  .table-font {
+    font-size: small;
+  }
   .shadow {
     box-shadow: 20px 20px 10px grey;
   }
