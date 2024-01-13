@@ -1,10 +1,9 @@
 <!doctype html>
 <html translate="no">
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
     <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <meta name="description" content="Indice de arrendamiento mensual para campos">
     <meta name="keywords" content="arrendamiento,indice,precio,campo,mensual,cria,ganadero,agro,mercado">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -22,14 +21,8 @@
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 
     <style>
-      @keyframes fadein-button {
-        from {
-          opacity: 0;
-        }
-  
-        to {
-          opacity: 1;
-        }
+      @keyframes fadein-button { 
+        from { opacity: 0; } to { opacity: 1; }
       }  
       .emergency-reload-button {
         z-index: -999;
@@ -47,15 +40,18 @@
       }
     </style>
     <title>MAG</title>
-    <script type="module" crossorigin src="/assets/index-bjYDuj6q.js"></script>
+    <script type="module" crossorigin src="/assets/index-d9FHTmg6.js"></script>
     <link rel="stylesheet" crossorigin href="/assets/index-4NwaY4YX.css">
   </head>
   <body>
     <div id="app"></div>
-    <noscript>Please enable JavaScript to continue using this application.</noscript>
+    <noscript>Please enable JavaScript.</noscript>
     <button class="emergency-reload-button" 
       href="#"
-      onClick="window.location.reload(true);">Reload</button>
+      onClick="window.location.reload(true);
+        window.location.href=window.location.href+'?'">
+      Reload
+    </button>
   </body>
 </html>
 <!-- version = 2 // added by deploy.py -->

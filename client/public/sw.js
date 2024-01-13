@@ -1,4 +1,4 @@
-// version = 1.0.63 // modified by deploy.py.
+// version = 1.0.64 // modified by deploy.py.
 const cacheName = 'mag-1.0';
 
 // self.addEventListener('message', event => {
@@ -48,24 +48,17 @@ self.addEventListener('activate', event => {
   );
 });
 
-const cachePatterns = [
-  '/favicon.ico',
-  '.png','.js','.css','.woff',
-  'manifest.json'
-];
-
+const cachePatterns = ['.ico','.png','.js','.css','.woff','manifest.json'];
 
 const canBeCached = (url) => {
   if (location.origin !== url.origin)
     return false;
   if (url.pathname.includes('/api'))
     return false;
-  
   for (let p of cachePatterns)
     //if (new RegExp(p).test(requestURL.pathname)) {
     if (url.pathname.includes(p))
       return true;
-
   return false;
 }
 
