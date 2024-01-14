@@ -21,22 +21,20 @@
     <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 
     <style>
-      @keyframes fadein-button { 
-        from { opacity: 0; } to { opacity: 1; }
-      }  
-      .emergency-reload-button {
+      .reload-button {
+        background-color: #dddddd;
+        border: none;
+        border-radius: 10px;
+        padding: 15px 32px;
+        font-size: 16px;
+      }
+      .message {
         z-index: -999;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
         opacity: 0;
-        animation: fadein-button 0.5s linear 3.5s forwards;
-        background-color: #dddddd;
-        border: none;
-        border-radius: 10px;
-        padding: 15px 32px;
-        font-size: 16px;
       }
     </style>
     <title>MAG</title>
@@ -44,12 +42,16 @@
   <body>
     <div id="app"></div>
     <noscript>Please enable JavaScript.</noscript>
-    <button class="emergency-reload-button" 
-      href="#"
-      onClick="window.location.reload(true);
-        window.location.href=window.location.href+'?'">
-      Reload
-    </button>
+    <div class="message">
+      <button class="reload-button" 
+        href="#"
+        onClick="window.location.reload(true);
+          window.location.href=window.location.href+'?'">
+        Reload
+      </button>
+      <br>
+      or press Control + F5
+    </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
