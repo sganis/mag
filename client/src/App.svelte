@@ -209,29 +209,29 @@
     return `Total Cache Storage: ${total} bytes`;
   }
 
-  const enableNotifications = () => {    
-    Notification.requestPermission().then((result) => {
-      console.log(result);
-      if (result === "granted") {
-        randomNotification();
-      } else {
-        console.log('not running')
-      }
-    });
-  }
+  // const enableNotifications = () => {    
+  //   Notification.requestPermission().then((result) => {
+  //     console.log(result);
+  //     if (result === "granted") {
+  //       randomNotification();
+  //     } else {
+  //       console.log('not running')
+  //     }
+  //   });
+  // }
 
-  function randomNotification() {
-    console.log('showing notification...');
-    const notifTitle = "Notif title";
-    const notifBody = "Created by SAG";
-    const notifImg = "/images/vite.svg";
-    const options = {
-      body: notifBody,
-      icon: notifImg,
-    };
-    new Notification(notifTitle, options);
-    setTimeout(randomNotification, 30000);
-  }
+  // function randomNotification() {
+  //   console.log('showing notification...');
+  //   const notifTitle = "Notif title";
+  //   const notifBody = "Created by SAG";
+  //   const notifImg = "/images/vite.svg";
+  //   const options = {
+  //     body: notifBody,
+  //     icon: notifImg,
+  //   };
+  //   new Notification(notifTitle, options);
+  //   setTimeout(randomNotification, 30000);
+  // }
 </script>
 
 <div class="full">
@@ -320,7 +320,7 @@
     {/if}
     <br>
 
-    <div class="form-check form-switch">
+    <!-- <div class="form-check form-switch">
       <input class="form-check-input" type="checkbox"
        id="flexSwitchCheckDefault" 
        bind:checked={notifications}
@@ -328,7 +328,7 @@
       <label class="form-check-label" for="flexSwitchCheckDefault">
         Enviame Notificaciones
       </label>
-    </div>
+    </div> -->
 
   </div>
   
