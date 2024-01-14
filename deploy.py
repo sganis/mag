@@ -50,10 +50,13 @@ version = semver.Version.parse(version)
 version = version.bump_patch()
 update_version(version)
 
+message = f"v{version}"
+if len(sys.argv) > 1:
+    message = sys.argv[1]
 print(f'deploying v{version}...')
 run('call npm --prefix ./client run build')
 run('git add .')
-run(f'git commit -am "v{version}"')
+run(f'git commit -am "{message}"')
 run(f'git tag -a v{version} -m v{version}')
 run('git push --follow-tags')
 print('done.')
