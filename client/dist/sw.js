@@ -1,4 +1,4 @@
-// version = 1.0.65 // modified by deploy.py.
+// version = 1.0.66 // modified by deploy.py.
 const cacheName = 'mag-1.0';
 
 // self.addEventListener('message', event => {
@@ -48,7 +48,7 @@ self.addEventListener('activate', event => {
   );
 });
 
-const cachePatterns = ['.ico','.png','.js','.css','.woff','manifest.json'];
+const cachePatterns = ['/','.ico','.png','.js','.css','.woff','manifest.json'];
 
 const canBeCached = (url) => {
   if (location.origin !== url.origin)
