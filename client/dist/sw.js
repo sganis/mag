@@ -1,4 +1,4 @@
-// version = 1.0.66 // modified by deploy.py.
+// version = 1.0.67 // modified by deploy.py.
 const cacheName = 'mag-1.0';
 
 // self.addEventListener('message', event => {
@@ -12,16 +12,16 @@ const cacheName = 'mag-1.0';
 self.addEventListener('install', event => {
   console.log('sw installed');
   event.waitUntil((async () => {
-    //const cache = await caches.open(cacheName);
-    //cache.addAll([
-      //'/',
-      //'/index.html',
+    const cache = await caches.open(cacheName);
+    await cache.addAll([
+      '/',
+      '/index.html',
       // '/assets/bootstrap-icons.woff2',
       // '/assets/bootstrap-icons.woff',
       // '/assets/index.css',
       // '/assets/index.js',
-    //]);
-    self.skipWaiting();
+    ]);
+    return self.skipWaiting();
   })());
 });
 
