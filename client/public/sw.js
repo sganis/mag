@@ -1,4 +1,4 @@
-// version = 1.0.71 // modified by deploy.py.
+// version = 1.0.72 // modified by deploy.py.
 const cacheName = 'mag-1.0';
 
 // self.addEventListener('message', event => {
@@ -8,6 +8,7 @@ const cacheName = 'mag-1.0';
 //     self.skipWaiting();
 //   }
 // });
+
 
 self.addEventListener('install', event => {
   console.log('sw installed');

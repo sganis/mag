@@ -28,15 +28,21 @@
 
   const checkUpdateInterval = 60 * 60 * 1000; // 1h
 
-  // if ('serviceWorker' in navigator) {
-  //   navigator.serviceWorker.register("/sw.js");
-  // }
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("/sw.js");
+  }
 
   onMount(async () => {
     await getData(true);      
     await getHistory();
     await checkVersion();
   });
+
+  window.onpageshow = function(event) {
+    if (event.persisted) {
+        window.location.reload() 
+    }
+  };
 
   setInterval(async () => {
     console.log('checking for update');
@@ -63,7 +69,7 @@
   });
   
   document.addEventListener('visibilitychange', () => {
-    console.log('visibility changed', document.visibilityState);
+    //console.log('visibility changed', document.visibilityState);
   });
 
   window.navigator.serviceWorker.addEventListener("controllerchange", e => {
