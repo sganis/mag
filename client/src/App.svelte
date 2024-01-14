@@ -386,10 +386,7 @@
   .center {
     text-align: center;
   }
-  .table-hist {
-    /* font-size: small; */
-  
-  }
+
   .shadow {
     box-shadow: 20px 20px 10px grey;
   }
@@ -427,9 +424,6 @@
   .notes {
     text-align: left;
     font-size: small;
-  }
-  .w100 {
-    width: 100px;
   }
   .btn-dots{
     color: gainsboro;
