@@ -74,7 +74,6 @@
           It looks like the application is not working properly on this device.
           Please send us a screenshot of this message, so that we can help you:
         </p>
-        <p class="whitescreen-email">sganis@gmail.com</p>
       </div>
       <div class="whitescreen-bottom">
         <p id="whitescreen-stack"></p>
@@ -105,11 +104,11 @@
       });
 
       // Detect empty app
-      setTimeout(function () {
-        if (!document.getElementById("app").children.length) {
-          showWhitescreenError(new Error("Empty app"));
-        }
-      }, WHITESCREEN_EMPTY_APP_ROOT_DELAY);
+      // setTimeout(function () {
+      //   if (!document.getElementById("app").children.length) {
+      //     showWhitescreenError(new Error("Empty app"));
+      //   }
+      // }, WHITESCREEN_EMPTY_APP_ROOT_DELAY);
     </script>
     <script type="module" src="/src/main.js"></script>
   </body>

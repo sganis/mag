@@ -259,8 +259,12 @@
     </button>
     <ul class="dropdown-menu dropdown-menu-dark">
       <li><p class="ms-3 mb-0">Version: {version}</p></li>
+      <li><a class="dropdown-item" href="#/" 
+        on:click={()=>getData(false)}>
+        Refresh 
+      </a></li>  
+      {#if serverVersion && serverVersion !== version}
       <li><hr class="dropdown-divider mb-0"></li>
-      {#if serverVersion !== version}
       <li><a class="dropdown-item" href="#/" on:click={updateNow}>
         Get v{serverVersion} 
       </a></li>
@@ -351,20 +355,13 @@
         No internet detected, working offline.
       </div>
     </div>
-    {:else}
+    <!-- {:else}
     <button 
         class="btn btn-light btn-lg w100 mb-4"
         aria-label="Refresh"
         disabled={$working}
         on:click={()=>getData(false)}>
         <i class="bi-arrow-repeat"/>
-    </button>
-    <!-- <button 
-        class="btn btn-light btn-lg w100 mb-3"
-        aria-label="Refresh"
-        disabled={$working}
-        on:click={updateNow}>
-        Reload
     </button> -->
     {/if}
   </div>
