@@ -1,4 +1,4 @@
-// version = 1.0.74 // modified by deploy.py.
+// version = 1.0.75 // modified by deploy.py.
 const cacheName = 'mag-1.0';
 
 // self.addEventListener('message', event => {
@@ -13,6 +13,7 @@ const cacheName = 'mag-1.0';
 self.addEventListener('install', event => {
   console.log('sw installed');
   event.waitUntil((async () => {
+    await caches.delete(cacheName);
     const cache = await caches.open(cacheName);
     await cache.addAll([
       '/',
@@ -27,26 +28,19 @@ self.addEventListener('install', event => {
 });
 
 
+
 self.addEventListener('activate', event => {
   console.log('sw activated, deleting cache...');
   event.waitUntil(
-    caches.keys()
-    .then(keys => {
-      return Promise.all(keys
-        .filter(key => key.startsWith(cacheName))
-        .map(key => caches.delete(key))
-      );
-    })
-    .then(() => self.clients.matchAll({
+    self.clients.matchAll({
         type: 'window'
       }).then(windowClients => {
         console.log('sw reloading all windows...');
         windowClients.forEach((windowClient) => {
           windowClient.navigate(windowClient.url);
         });
-      }))
-    //.then(() => self.clients.claim())
-  );
+      }));
+    //return self.clients.claim();
 });
 
 const cachePatterns = ['/','.ico','.png','.js','.css','.woff','manifest.json'];
