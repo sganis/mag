@@ -24,7 +24,8 @@
   let patch = version.split('.')[2];
   let colorIndex = Number(patch) % 3;
   let color = colors[colorIndex];
-  
+  let notifications;
+
   const checkUpdateInterval = 60 * 60 * 1000; // 1h
 
   if ('serviceWorker' in navigator) {
@@ -208,7 +209,29 @@
     return `Total Cache Storage: ${total} bytes`;
   }
 
+  const enableNotifications = () => {    
+    Notification.requestPermission().then((result) => {
+      console.log(result);
+      if (result === "granted") {
+        randomNotification();
+      } else {
+        console.log('not running')
+      }
+    });
+  }
 
+  function randomNotification() {
+    console.log('showing notification...');
+    const notifTitle = "Notif title";
+    const notifBody = "Created by SAG";
+    const notifImg = "/images/vite.svg";
+    const options = {
+      body: notifBody,
+      icon: notifImg,
+    };
+    new Notification(notifTitle, options);
+    setTimeout(randomNotification, 30000);
+  }
 </script>
 
 <div class="full">
@@ -295,7 +318,20 @@
         </div>
       </div>
     {/if}
+    <br>
+
+    <div class="form-check form-switch">
+      <input class="form-check-input" type="checkbox"
+       id="flexSwitchCheckDefault" 
+       bind:checked={notifications}
+       on:change={enableNotifications}>
+      <label class="form-check-label" for="flexSwitchCheckDefault">
+        Enviame Notificaciones
+      </label>
+    </div>
+
   </div>
+  
 </div> <!--center-->
 </div><!--scrollable-->
 
