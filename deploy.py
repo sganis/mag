@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # deploy to vercel with git
 # using cli: vercel --prod
 import sys
@@ -54,7 +55,10 @@ message = f"v{version}"
 if len(sys.argv) > 1:
     message = sys.argv[1]
 print(f'deploying v{version}...')
-run('call npm --prefix ./client run build')
+if os.name == 'nt':
+    run('call npm --prefix ./client run build')
+else:
+    run('npm --prefix ./client run build')
 run('git add .')
 run(f'git commit -am "{message}"')
 run(f'git tag -a v{version} -m v{version}')
