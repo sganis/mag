@@ -28,9 +28,9 @@
 
   const checkUpdateInterval = 60 * 60 * 1000; // 1h
 
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register("/sw.js");
-  }
+  // if ('serviceWorker' in navigator) {
+  //   navigator.serviceWorker.register("/sw.js");
+  // }
 
   onMount(async () => {
     await getData(true);      
