@@ -67,12 +67,12 @@ def f():
         date = prev_month
     return hist
 
-@app.get("/api/{month}")
+@app.get("/api/month/{month}")
 def f(month: str):
-    if len(month) != 6:
-        return {'detail': 'invalid month, format must be yyyymm'}        
+    if len(month) != 7:
+        return {'detail': 'invalid month, format must be yyyy-mm'}        
     y = month[:4]
-    m = month[4:]
+    m = month[5:]
     date = datetime.strptime(f'01/{m}/{y}','%d/%m/%Y')
     return get_data(date)  
 
