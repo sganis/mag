@@ -1,4 +1,4 @@
-version = '1.0.85' // modified by deploy.py.
+version = '1.0.86' // modified by deploy.py.
 const CACHE_NAME = `mag-${version}`;
 
 // self.addEventListener('message', event => {
