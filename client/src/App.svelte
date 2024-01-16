@@ -28,21 +28,16 @@
 
   const checkUpdateInterval = 60 * 60 * 1000; // 1h
 
-  // if ('serviceWorker' in navigator) {
-  //   navigator.serviceWorker.register("/sw.js");
-  // }
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("/sw.js");
+  }
 
   onMount(async () => {
     await getData(true);      
     await getHistory();
     await checkVersion();
+    offline = !navigator.onLine;
   });
-
-  window.onpageshow = function(event) {
-    if (event.persisted) {
-        window.location.reload() 
-    }
-  };
 
   setInterval(async () => {
     console.log('checking for update');
@@ -59,12 +54,12 @@
   }
 
   window.addEventListener("offline", (e) => {
-    console.log('app is offline');
+    console.log('app is offline', navigator.onLine);
     offline = true;
   });
 
   window.addEventListener("online", (e) => {
-    console.log('back online');
+    console.log('back online', navigator.onLine);
     offline = false;
   });
   
@@ -79,6 +74,7 @@
   });
 
   const getData = async (cache) => {
+    error = '';
     const key = getMonthKey();
 
     if (cache) {
@@ -120,6 +116,7 @@
     }
     catch (err) {
         console.log(err)
+        error = 'Service not available.';
     }
     finally {
         $working = false;
@@ -145,6 +142,7 @@
     }
     catch (err) {
         console.log(err)
+        //error = err;
     }
     finally {
         gettingHistory = false;
@@ -178,20 +176,20 @@
   const updateNow = async () => {
     $working = true;
     updating = true;
-    console.log(await getCacheSize());
-    console.log('clearing cache...');
+    //console.log(await getCacheSize());
+    //console.log('clearing cache...');
     navigator.serviceWorker.getRegistrations().then((registrations) => {
         for (let registration of registrations) {
           registration.unregister()
         }
     })
-    caches.keys().then(keys => {
-      return Promise.all(keys
-        .filter(key => key.startsWith('mag-1.0'))
-        .map(key => caches.delete(key))
-      );      
-    })
-    console.log(await getCacheSize());
+    // caches.keys().then(keys => {
+    //   return Promise.all(keys
+    //     .filter(key => key.startsWith('mag-1.0'))
+    //     .map(key => caches.delete(key))
+    //   );      
+    // })
+    // console.log(await getCacheSize());
     window.location.reload();
   }
 
@@ -253,7 +251,7 @@
   {/if}
   <div class="dropdown">
     <button class="btn btn-outline-light border-0 bg-transparent btn-dots" 
-      type="button" data-bs-toggle="dropdown" 
+      type="button" data-bs-toggle="dropdown" aria-label="menu"
       aria-expanded="false">
       <i class="bi-three-dots"/>
     </button>
@@ -345,29 +343,32 @@
 </div> <!--center-->
 </div><!--scrollable-->
 
+{#if offline}
 <div class="row center m-3">
   <div class="col">    
-    {#if offline}
-    <div class="alert alert-danger d-flex align-items-center"
-       role="alert">
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
       <i class="bi-exclamation-triangle" />
       <div>&nbsp;
         No internet detected, working offline.
       </div>
     </div>
-    <!-- {:else}
-    <button 
-        class="btn btn-light btn-lg w100 mb-4"
-        aria-label="Refresh"
-        disabled={$working}
-        on:click={()=>getData(false)}>
-        <i class="bi-arrow-repeat"/>
-    </button> -->
-    {/if}
   </div>
 </div>
+{/if}
 
-<!-- <ReloadPrompt /> -->
+{#if error}
+<div class="row center m-3">
+  <div class="col">    
+    <div class="alert alert-danger d-flex align-items-center" role="alert">
+      <i class="bi-exclamation-triangle" />
+      <div>&nbsp;
+        {error}
+      </div>
+    </div>
+  </div>
+</div>
+{/if}
+
 
 <div class="footer">
   &nbsp;

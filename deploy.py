@@ -33,7 +33,7 @@ def update_version(version):
                 w.write(line)
     with open(f'{DIR}/client/public/sw.js') as f:
         lines = f.readlines()
-    lines[0] = f"// version = {version} // modified by deploy.py.\n"
+    lines[0] = f"version = '{version}' // modified by deploy.py.\n"
     with open(f'{DIR}/client/public/sw.js', "w") as f:
         f.writelines(lines)
 
