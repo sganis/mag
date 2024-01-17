@@ -37,6 +37,12 @@
     await getHistory();
     await checkVersion();
     offline = !navigator.onLine;
+    
+    // badge
+    if (navigator.setAppBadge) {
+      console.log('setting badge');
+      navigator.setAppBadge(1);
+    }
   });
 
   setInterval(async () => {

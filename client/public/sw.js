@@ -1,4 +1,4 @@
-version = '1.0.86' // modified by deploy.py.
+version = '1.0.87' // modified by deploy.py.
 const CACHE_NAME = `mag-${version}`;
 
 // self.addEventListener('message', event => {
@@ -99,29 +99,23 @@ const fromNetwork = (request, timeout) =>
   });
 
 // fetch the resource from the browser cache
-const fromCache = request => {
+const fromCache = async request => {
   console.log('cache: ', request.url);
-  return caches
-    .open(CACHE_NAME)
-    .then(cache =>
-      cache
-        .match(request)
-        .then(response => response || cache.match('/'))
-        .catch(err => {
-          console.log(err)
-        })
-    );
+  const cache = await caches.open(CACHE_NAME);
+  try {
+    const response = await cache.match(request);
+    return response || cache.match('/');
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 // cache the current page to make it available for offline
-const update = request => 
-  caches
-    .open(CACHE_NAME)
-    .then(cache =>
-      fetch(request).then(response => cache.put(request, response))
-    ).catch(err => {
-      console.log(err)
-    });
+const update = async req => {
+  const cache = await caches.open(CACHE_NAME);
+  const res = await fetch(req);
+  return await cache.put(req, res);
+}
 
 // general strategy when making a request (eg if online try to fetch it
 // from the network with a timeout, if something fails serve from cache)
